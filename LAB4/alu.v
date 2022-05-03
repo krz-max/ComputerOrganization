@@ -90,7 +90,7 @@ always @(*) begin
 	endcase
 end
 
-generate;
+generate
 	genvar i;
 	alu_1bit u1(.src1(src1[0]), .src2(src2[0]), .less(set), .Ainvert(Ainv), .Binvert(Binv),
 				.cin(cin), .operation(operation), .result(result0[0]), .cout(c_out[0]));

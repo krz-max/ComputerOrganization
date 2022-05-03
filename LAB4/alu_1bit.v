@@ -14,8 +14,8 @@ module alu_1bit(
 
 /* Write your code HERE */
 wire a, b;
-MUX_2to1 m1(.src1(src1), .src2(~src1), .select(Ainvert), .result(a));
-MUX_2to1 m2(.src1(src2), .src2(~src2), .select(Binvert), .result(b));
+MUX2to1 m1(.src1(src1), .src2(~src1), .select(Ainvert), .result(a));
+MUX2to1 m2(.src1(src2), .src2(~src2), .select(Binvert), .result(b));
 
 MUX4to1 m3(.src1(a&b), .src2(a|b), .src3(a^b^cin), .src4(less), .select(operation), .result(result));
 
