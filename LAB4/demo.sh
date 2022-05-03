@@ -3,7 +3,6 @@
 function main()
 {
     make clean
-    check_number
     make
 
     diff -B -b \

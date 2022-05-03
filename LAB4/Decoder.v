@@ -16,7 +16,8 @@ module Decoder(
 );
 
 /* Write your code HERE */
-
+wire [7-1:0] opcode;
+assign opcode = instr_i;
 always @(*) begin
 	case(opcode)
 		7'b0110011: begin //R-type

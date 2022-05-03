@@ -1,7 +1,7 @@
 
 `timescale 1ns/1ps
 
-module MUX_2to1(
+module MUX2to1(
     input  [31:0] data0_i,
     input  [31:0] data1_i,
     input         select_i,
