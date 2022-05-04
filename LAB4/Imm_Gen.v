@@ -29,6 +29,9 @@ always @* begin
         7'b1101111, 7'b1100111: begin //jal, jalr
             Imm_Gen_o = {{12{instr_i[31]}}, instr_i[19:12], instr_i[20], instr_i[30:25], instr_i[24:21], 1'b0};
         end
+        default: begin
+            Imm_Gen_o = 0;
+        end
     endcase
 end
 

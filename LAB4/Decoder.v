@@ -87,7 +87,7 @@ always @(*) begin
             MemWrite = 0;
             ALUSrcA = 0;
             ALUSrcB = 0;
-            ALUOp = 2'bxx;
+            ALUOp = 2'b00;
         end
         7'b1100111: begin
             RegWrite = 1;
@@ -99,7 +99,19 @@ always @(*) begin
             MemWrite = 0;
             ALUSrcA = 1;
             ALUSrcB = 0;
-            ALUOp = 2'bxx;
+            ALUOp = 2'b00;
+        end
+        default: begin
+            RegWrite = 0;
+            Branch = 0;
+            Jump = 0;
+            WriteBack1 = 0;
+            WriteBack0 = 0;
+            MemRead = 0;
+            MemWrite = 0;
+            ALUSrcA = 0;
+            ALUSrcB = 0;
+            ALUOp = 2'b00;
         end
 	endcase
 end
