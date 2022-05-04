@@ -131,14 +131,14 @@ alu alu(
     .src1(RSdata_o),
     .src2(ALUSrc2_o),
     .ALU_control(ALUControlOut),
-    .Zero(zero),
+    .Zero(Zero),
     .result(ALUresult)
 );
 
 Data_Memory Data_Memory(
     .clk_i(clk_i),
     .addr_i(ALUresult),
-    .data_i(RSdata_o),
+    .data_i(RTdata_o),
     .MemRead_i(MemRead),
     .MemWrite_i(MemWrite),
     .data_o(Memory_o)

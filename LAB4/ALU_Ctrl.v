@@ -28,6 +28,7 @@ always @(*) begin
 		6'b110110: ALU_Ctrl_o = 4'b1000; // sra
 		6'b000110: ALU_Ctrl_o = 4'b1001; // sll
 		6'b010010: ALU_Ctrl_o = 4'b1010; // xor
+		default: ALU_Ctrl_o = 4'b0000;
 	endcase
 end
 endmodule
