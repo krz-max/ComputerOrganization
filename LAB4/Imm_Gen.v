@@ -16,7 +16,7 @@ assign func3  = instr_i[14:12];
 
 /* Write your code HERE */
 always @* begin
-    case(opcode)
+    casez(opcode)
         7'b0010011, 7'b0000011: begin //addi, load
             Imm_Gen_o = {{20{instr_i[31]}}, instr_i[31:20]};
         end

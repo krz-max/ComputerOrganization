@@ -14,7 +14,7 @@ module alu(
 assign Zero = (result == 0) ? 1 : 0;
 
 always @(*) begin
-	case(ALU_control)
+	casez(ALU_control)
 		4'b0000: begin // AND
 			result = src1 & src2;
 		end
