@@ -2,7 +2,7 @@
 
 ## Lab01: RISC-V Programming
 1. Goal
-   Understand the difference between assembly and high-level languages. To test the correctness of the program, we use RISC-V simulator - Ripes
+   - Understand the difference between assembly and high-level languages. To test the correctness of the program, we use RISC-V simulator - Ripes
 2. Attached Files
    - factorial.c
    - factorial.s (example assembly language)
@@ -14,13 +14,13 @@
    - Count the number of instructions of each program.
    - Count the maximum number of variable pushed into the stack.
 4. Reference Link
-   [Ripes Introduction](https://github.com/mortbopet/Ripes/wiki/)
-   [Ripes Download](https://github.com/mortbopet/Ripes/releases/tag/v.1.0.4)
+   - [Ripes Introduction](https://github.com/mortbopet/Ripes/wiki/)
+   - [Ripes Download](https://github.com/mortbopet/Ripes/releases/tag/v.1.0.4)
 
 
 ## Lab02: 32-bit ALU
 1. Goal
-   Implement a 32-bit ALU using Verilog.
+   - Implement a 32-bit ALU using Verilog.
 2. Attached Files
    - **alu_1bit.v**
    - **alu.v**
@@ -41,14 +41,15 @@
      | nor           | NOR           | 1100          |
      | nand          | NAND          | 1101          |
 4. Reference Link
-   [How to use generate for in Verilog]()
+   - [How to use generate for in Verilog]()
 /**************************** Template ******************************/
 ## Labxx: 
 1. Goal
-
+   - 
 2. Attached Files
-
+   - 
 3. Lab Description
-
+   - 
 4. Reference Link
+   - 
 /**************************** Template ******************************/
