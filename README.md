@@ -42,6 +42,8 @@
      | nand          | NAND          | 1101          |
 4. Reference Link
    - [How to use generate for in Verilog]()
+
+---
 /**************************** Template ******************************/
 ## Labxx: 
 1. Goal
