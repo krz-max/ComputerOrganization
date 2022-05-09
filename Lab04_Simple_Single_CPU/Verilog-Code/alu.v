@@ -2,12 +2,23 @@
 
 module alu(
     input                   rst_n,         // negative reset            (input)
-    input signed       [32-1:0]   src1,          // 32 bits source 1          (input)
-    input signed       [32-1:0]   src2,          // 32 bits source 2          (input)
+    input signed [32-1:0]   src1,          // 32 bits source 1          (input)
+    input signed [32-1:0]   src2,          // 32 bits source 2          (input)
     input        [ 4-1:0]   ALU_control,   // 4 bits ALU control input  (input)
     output reg   [32-1:0]   result,        // 32 bits result            (output)
-    output               Zero          // 1 bit when the output is 0, zero must be set (output)
+    output                  Zero          // 1 bit when the output is 0, zero must be set (output)
 );
+
+localparam [4-1:0] AND  = 4'b0000;
+localparam [4-1:0] OR   = 4'b0001;
+localparam [4-1:0] ADD  = 4'b0010;
+localparam [4-1:0] SUB  = 4'b0110;
+localparam [4-1:0] SLT  = 4'b0111;
+localparam [4-1:0] NOR  = 4'b1100;
+localparam [4-1:0] NAND = 4'b1101;
+localparam [4-1:0] SRA  = 4'b1000;
+localparam [4-1:0] SLL  = 4'b1001;
+localparam [4-1:0] XOR  = 4'b1010;
 
 /* Write your code HERE */
 
@@ -50,5 +61,6 @@ always @(*) begin
 		end
 	endcase
 end
+
 
 endmodule

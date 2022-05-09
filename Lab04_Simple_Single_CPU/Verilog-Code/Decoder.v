@@ -13,11 +13,17 @@ module Decoder(
     output  reg            ALUSrcB,
     output  reg[2-1:0]     ALUOp
 );
-
+localparam [7-1:0] R_TYPE = 7'b0110011;
+localparam [7-1:0] ADDI   = 7'b0010011;
+localparam [7-1:0] LOAD   = 7'b0000011;
+localparam [7-1:0] STORE  = 7'b0100011;
+localparam [7-1:0] BRANCH = 7'b1100011;
+localparam [7-1:0] JAL    = 7'b1101111;
+localparam [7-1:0] JALR   = 7'b1100111;
 /* Write your code HERE */
 always @(*) begin
 	casez(instr_i)
-		7'b0110011: begin //R-type
+		R_TYPE: begin //R-type
             RegWrite = 1;
             Branch = 0;
             Jump = 0;
@@ -29,7 +35,7 @@ always @(*) begin
             ALUSrcB = 0;
             ALUOp = 2'b10;
 		end
-        7'b0010011: begin //addi
+        ADDI: begin //addi
             RegWrite = 1;
             Branch = 0;
             Jump = 0;
@@ -41,7 +47,7 @@ always @(*) begin
             ALUSrcB = 1;
             ALUOp = 2'b00;
         end
-		7'b0000011: begin //Load
+		LOAD: begin //Load
             RegWrite = 1;
             Branch = 0;
             Jump = 0;
@@ -53,7 +59,7 @@ always @(*) begin
             ALUSrcB = 1;
             ALUOp = 2'b00;
 		end
-		7'b0100011: begin //Store
+		STORE: begin //Store
             RegWrite = 0;
             Branch = 0;
             Jump = 0;
@@ -65,7 +71,7 @@ always @(*) begin
             ALUSrcB = 1;
             ALUOp = 2'b00;
 		end
-		7'b1100011: begin //Branch
+		BRANCH: begin //Branch
             RegWrite = 0;
             Branch = 1;
             Jump = 0;
@@ -77,7 +83,7 @@ always @(*) begin
             ALUSrcB = 0;
             ALUOp = 2'b01;
 		end
-        7'b1101111: begin //jal
+        JAL: begin //jal
             RegWrite = 1;
             Branch = 0;
             Jump = 1;
@@ -89,7 +95,7 @@ always @(*) begin
             ALUSrcB = 1'bx;
             ALUOp = 2'bxx;
         end
-        7'b1100111: begin //jalr
+        JALR: begin //jalr
             RegWrite = 1;
             Branch = 0;
             Jump = 1;
