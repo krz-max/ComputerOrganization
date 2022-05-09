@@ -41,7 +41,7 @@
      | nor           | NOR           | 1100          |
      | nand          | NAND          | 1101          |
 4. Reference Link
-   - [How to use generate for in Verilog]()
+   - [How to use generate for in Verilog](https://www.chipverify.com/verilog/verilog-generate-block)
 
 ---
 /**************************** Template ******************************/
