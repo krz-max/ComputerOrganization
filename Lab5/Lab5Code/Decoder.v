@@ -2,14 +2,17 @@
 
 module Decoder(
     input [32-1:0]  instr_i,
-    output reg         Branch,
-    output reg         ALUSrc,
     output reg         RegWrite,
-    output reg [2-1:0] ALUOp,
+    output reg         Branch,
+    output reg         Jump
+    output reg         WriteBack1,
+    output reg         WriteBack0,
     output reg         MemRead,
     output reg         MemWrite,
-    output reg         MemtoReg,
-    output reg         Jump
+    output reg         ALUSrcA,
+    output reg         ALUSrcB,
+    output reg [2-1:0] ALUOp
+    // output reg         MemtoReg(merged into WriteBack)
 );
 
 //Internal Signals

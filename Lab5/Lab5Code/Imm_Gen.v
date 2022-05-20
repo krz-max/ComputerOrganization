@@ -16,7 +16,7 @@ assign func3  = instr_i[14:12];
 
 always @* begin
     casez(opcode)
-        7'b0010011, 7'b0000011, 7'b1100111: begin //addi, load
+        7'b0010011, 7'b0000011, 7'b1100111: begin //addi, load, jalr
             Imm_Gen_o = {{20{instr_i[31]}}, instr_i[31:20]};
         end
         7'b0100011: begin //store
@@ -25,7 +25,7 @@ always @* begin
         7'b1100011: begin //Branch
             Imm_Gen_o = {{19{instr_i[31]}}, instr_i[7], instr_i[30:25], instr_i[11:8], 1'b0};
         end
-        7'b1101111: begin //jal, jalr
+        7'b1101111: begin //jal
             Imm_Gen_o = {{12{instr_i[31]}}, instr_i[19:12], instr_i[20], instr_i[30:25], instr_i[24:21], 1'b0};
         end
         default: begin
