@@ -160,7 +160,7 @@ IFID_register IFtoID(
 Hazard_detection Hazard_detection_obj(
     .IFID_regRs(IFID_Instr_o[19:15]), // rs1
     .IFID_regRt(IFID_Instr_o[24:20]), // rs2
-    .IDEXE_regRd(IDEXE_Instr_o[11:7]), // rd of load
+    .IDEXE_regRd(IDEXE_Rd), // rd of load
     .IDEXE_memRead(), // check if it's load instruction
 
     .PC_write(PC_write),
