@@ -358,12 +358,7 @@ MUX_3to1 MUX_MemtoReg(
 
 endmodule
 
-<<<<<<< HEAD
-=======
 //keep going
-
-<<<<<<< HEAD
->>>>>>> 930d08fe414303898a500a85d0d1bb3b5701378a
 //hello try try see
 
 //所以lab5還有哪裡要修
