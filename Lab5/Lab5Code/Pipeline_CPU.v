@@ -358,13 +358,10 @@ MUX_3to1 MUX_MemtoReg(
 
 endmodule
 
-<<<<<<< HEAD
 //hello try try see
 
-=======
 //所以lab5還有哪裡要修
 //我想想
 // git add .
 // git commit -m "message"
 // git push url
->>>>>>> 119755310e72288db3ca62ed8c06d961e0735620
