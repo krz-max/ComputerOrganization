@@ -360,4 +360,6 @@ endmodule
 
 //所以lab5還有哪裡要修
 //我想想
-
+// git add .
+// git commit -m "message"
+// git push url
