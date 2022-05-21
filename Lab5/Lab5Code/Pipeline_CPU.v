@@ -358,5 +358,5 @@ MUX_3to1 MUX_MemtoReg(
 
 endmodule
 
-
+//所以lab5還有哪裡要修
 
