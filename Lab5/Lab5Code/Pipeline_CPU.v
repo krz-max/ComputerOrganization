@@ -186,16 +186,11 @@ Decoder Decoder(
     .WriteBack0(ID_WB0),
     .MemRead(ID_MemRead),
     .MemWrite(ID_MemWrite),
-    .ALUSrc(ID_ALUSrcA), // not sure
+    .ALUSrc(ID_ALUSrcA), // in Lab4, it is for branch and jump, and is used to select PCSrc.
     .ALUSrc(ID_ALUSrcB), // choose immd or rs2
     .ALUOp(ID_ALUOp), // 
 );
 
-ALU_Ctrl ALU_Ctrl(
-    .instr({IFID_Instr_o[30], IFID_Instr_o[14:12]}),
-    .ALUOp(ID_ALUOp),
-    .ALU_Ctrl_o(ALU_Ctrl_o)
-);
 Reg_File RF(
     .clk_i(clk_i),
     .rst_i(rst_i),
@@ -230,11 +225,11 @@ IDEXE_register IDtoEXE(
     .data1_i(RSdata_o),
     .data2_i(RTdata_o),
     .immgen_i(Imm_Gen_o),
-    .alu_ctrl_instr(ALU_Ctrl_o),
+    .alu_ctrl_instr({IFID_Instr_o[30], IFID_Instr_o[14:12]}),
     .WBreg_i(IFID_Instr_o[11:7]), // rd
     .Rs1_i(IFID_Instr_o[19:15]), // rs1
     .Rs2_i(IFID_Instr_o[24:20]), // rs2
-    // .pc_add4_i(), // originally for branch
+    .pc_add4_i(PC_Add4), // for jal to store PC+4 to Rd
 
     .instr_o(IDEXE_Instr_o),
     .WB_o(IDEXE_WB_o),
@@ -243,11 +238,11 @@ IDEXE_register IDtoEXE(
     .data1_o(IDEXE_RSdata_o),
     .data2_o(IDEXE_RTdata_o),
     .immgen_o(IDEXE_ImmGen_o),//
-    .alu_ctrl_input(IDEXE_ALUCtrl_o),//
+    .alu_ctrl_input(IDEXE_Instr_30_14_12_o),//
     .WBreg_o(IDEXE_Rd),
     .Rs1_o(IDEXE_Rs1_o),
     .Rs2_o(IDEXE_Rs2_o),
-    // .pc_add4_o(IDEXE_PC_add4_o)
+    .pc_add4_o(IDEXE_PC_add4_o)
 );
 
 // EXE
@@ -262,8 +257,8 @@ MUX_2to1 MUX_ALUSrc(
 ForwardingUnit FWUnit(
     .IDEXE_RS1(IDEXE_Rs1_o), // should be address
     .IDEXE_RS2(IDEXE_Rs2_o),
-    .EXEMEM_RD(EXEMEM_WB_o), // rd from EXEMEM
-    .MEMWB_RD(MEMWB_WB_o),
+    .EXEMEM_RD(EXEMEM_Instr_11_7_o), // rd from EXEMEM
+    .MEMWB_RD(MEMWB_Instr_11_7_o),  // rd from MEMWB
     .EXEMEM_RegWrite(EXEMEM_WB_o), // {RegWrite, WB1, WB0}
     .MEMWB_RegWrite(MEMWB_WB_o), // {RegWrite, WB1, WB0}
 
@@ -286,7 +281,7 @@ MUX_3to1 MUX_ALU_src2(
     .select_i(ForwardB),
     .data_o(ALUSrc2_o)
 );
-
+assign ALUOp = IDEXE_Exe_o[2:1];
 ALU_Ctrl ALU_Ctrl(
     .instr(IDEXE_Instr_30_14_12_o),
     .ALUOp(ALUOp),
@@ -305,58 +300,59 @@ alu alu(
 EXEMEM_register EXEtoMEM(
     .clk_i(clk_i),
     .rst_i(rst_i),
-    .instr_i(),//
-    .WB_i(MEMWB_WB_o),
-    .Mem_i(),
-    .zero_i(),
+    // .instr_i(),
+    .WB_i(IDEXE_WB_o),
+    .Mem_i(IDEXE_Mem_o),
+    .zero_i(Zero),
     .alu_ans_i(ALUResult),
-    .rtdata_i(),
-    .WBreg_i(),
-    .pc_add4_i(MEMWB_PC_Add4_o),
+    .rtdata_i(ALUSrc2_o),
+    .WBreg_i(IDEXE_Rd),
+    .pc_add4_i(IDEXE_PC_add4_o),
 
-    .instr_o(EXEMEM_Instr_o),
+    // .instr_o(EXEMEM_Instr_o),
     .WB_o(EXEMEM_WB_o),
     .Mem_o(EXEMEM_Mem_o),
     .zero_o(EXEMEM_Zero_o),
     .alu_ans_o(EXEMEM_ALUResult_o),
-    .rtdata_o(),
-    .WBreg_o(),
+    .rtdata_o(EXEMEM_RTdata_o),
+    .WBreg_o(EXEMEM_Instr_11_7_o), // rd
     .pc_add4_o(EXEMEM_PC_Add4_o)
 );
 
 // MEM
+wire [32-1:0] EXEMEM_DM_o
 Data_Memory Data_Memory(
     .clk_i(clk_i),
-    .addr_i(MEMWB_ALUresult_o),
-    .data_i(MEMWB_DM_o),
-    .MemRead_i(),
-    .MemWrite_i(),
+    .addr_i(EXEMEM_ALUresult_o),
+    .data_i(EXEMEM_RTdata_o),
+    .MemRead_i(EXEMEM_Mem_o[4]),
+    .MemWrite_i(EXEMEM_Mem_o[3]),
 
-    .data_o(MEMWB_RD)
+    .data_o(EXEMEM_DM_o)
 );
 
 MEMWB_register MEMtoWB(
     .clk_i(clk_i),
     .rst_i(rst_i),
-    .WB_i(IDEXE_WB_o),
-    .DM_i(),
-    .alu_ans_i(ALUResult),
-    .WBreg_i(),
-    .pc_add4_i(IDEXE_PC_add4_o),
+    .WB_i(EXEMEM_WB_o),
+    .DM_i(EXEMEM_DM_o),
+    .alu_ans_i(EXEMEM_ALUResult_o),
+    .WBreg_i(EXEMEM_Instr_11_7_o),
+    .pc_add4_i(EXEMEM_PC_Add4_o),
 
     .WB_o(MEMWB_WB_o),
     .DM_o(MEMWB_DM_o),
     .alu_ans_o(MEMWB_ALUresult_o),
-    .WBreg_o(),
-    .pc_add4_o(MEMWB_PC_Add4_o)
+    .WBreg_o(MEMWB_Instr_11_7_o),
+    .pc_add4_o(MEMWB_PC_Add4_o) // for jal to store PC+4 to Rd
 );
 
 // WB
 MUX_3to1 MUX_MemtoReg(
-    .data0_i(),
-    .data1_i(),
-    .data2_i(),
-    .select_i(),
+    .data0_i(MEMWB_ALUresult_o), // check lab4 datapath
+    .data1_i(MEMWB_DM_o),
+    .data2_i(MEMWB_PC_Add4_o),
+    .select_i(MEMWB_WB_o),
     .data_o(MUXMemtoReg_o)
 );
 
