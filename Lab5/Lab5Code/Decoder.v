@@ -1,5 +1,4 @@
 `timescale 1ns/1ps
-~~~
 module Decoder(
     input [32-1:0]  instr_i,
     output reg         RegWrite,
