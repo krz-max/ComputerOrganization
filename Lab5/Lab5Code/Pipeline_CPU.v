@@ -159,7 +159,7 @@ Hazard_detection Hazard_detection_obj(
     .IFID_regRs(IFID_Instr_o[19:15]), // rs1
     .IFID_regRt(IFID_Instr_o[24:20]), // rs2
     .IDEXE_regRd(IDEXE_Rd), // rd of load
-    .IDEXE_memRead(), // check if it's load instruction
+    .IDEXE_memRead(IDEXE_memRead), // check if it's load instruction
 
     .PC_write(PC_write),
     .IFID_write(IFID_Write),
@@ -192,7 +192,7 @@ Decoder Decoder(
 );
 
 ALU_Ctrl ALU_Ctrl(
-    .instr({IFID_Instr_o[30], IFID_Instr_o[14:12]),
+    .instr({IFID_Instr_o[30], IFID_Instr_o[14:12]}),
     .ALUOp(ID_ALUOp),
     .ALU_Ctrl_o(ALU_Ctrl_o)
 );
@@ -255,7 +255,7 @@ wire [32-1:0] EXE_ALUSrc_o
 MUX_2to1 MUX_ALUSrc(
     .data0_i(IDEXE_RTdata_o),
     .data1_i(IDEXE_ImmGen_o),
-    .select_i(IDEXE_Exe_o[0]),//ALUSrcA (ALUSrcB?)
+    .select_i(IDEXE_Exe_o[0]),//ALUSrcB
     .data_o(EXE_ALUSrc_o)
 );
 
@@ -264,8 +264,8 @@ ForwardingUnit FWUnit(
     .IDEXE_RS2(IDEXE_Rs2_o),
     .EXEMEM_RD(EXEMEM_WB_o), // rd from EXEMEM
     .MEMWB_RD(MEMWB_WB_o),
-    .EXEMEM_RegWrite(EXEMEM_RegWrite),
-    .MEMWB_RegWrite(),
+    .EXEMEM_RegWrite(EXEMEM_WB_o), // {RegWrite, WB1, WB0}
+    .MEMWB_RegWrite(MEMWB_WB_o), // {RegWrite, WB1, WB0}
 
     .ForwardA(ForwardA),
     .ForwardB(ForwardB)
