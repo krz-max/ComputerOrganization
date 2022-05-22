@@ -11,8 +11,6 @@ module IDEXE_register (
     input [31:0] immgen_i,
     input [3:0] alu_ctrl_instr,
     input [4:0] WBreg_i,
-    input [4:0] Rs1_i,
-    input [4:0] Rs2_i,
     input [31:0] pc_add4_i,
 
     output reg [31:0] instr_o,
@@ -24,8 +22,6 @@ module IDEXE_register (
     output reg [31:0] immgen_o,
     output reg [3:0] alu_ctrl_input,
     output reg [4:0] WBreg_o
-    output reg [4:0] Rs1_o,
-    output reg [4:0] Rs2_o,
     output reg [31:0] pc_add4_o
 );
 /* Write your code HERE */
@@ -39,8 +35,6 @@ always @(posedge clk_i) begin
     immgen_o <= immgen_i;
     alu_ctrl_input <= alu_ctrl_instr;
     WBreg_o <= WBreg_i;
-    Rs1_o <= Rs1_i;
-    Rs2_o <= Rs2_i;
-    // pc_add4_o <= pc_add4_i;
+    pc_add4_o <= pc_add4_i;
 end
 endmodule

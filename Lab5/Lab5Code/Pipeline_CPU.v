@@ -148,14 +148,14 @@ Hazard_detection Hazard_detection_obj(
 
 MUX_2to1 MUX_control(
     .data0_i(0),
-    .data1_i({ID_WB1, ID_WB0, ID_MemRead, ID_MemWrite, ID_ALUOp, ID_ALUSrcB}),// ID_ALUSrcA ?
+    .data1_i({RegWrite, MemtoReg, MemRead, MemWrite, ALUOp, ALUSrc}),// {1, 2, 1, 1, 2, 1}
     .select_i(MUXControl),
     .data_o(MUX_control_o)
 );
 
 Decoder Decoder(
     .instr_i(IFID_Instr_o),
-    
+
     .RegWrite(RegWrite), // sent to MEM/WB
     .Branch(Branch), // determined at ID stage
     .Jump(Jump),
@@ -171,11 +171,13 @@ Decoder Decoder(
 Reg_File RF(
     .clk_i(clk_i),
     .rst_i(rst_i),
+
     .RSaddr_i(IFID_Instr_o[19:15]),
     .RTaddr_i(IFID_Instr_o[24:20]),
-    .RDaddr_i(EXMEM_Rd_o[11:7]),
+    .RDaddr_i(EXEMEM_Instr_11_7_o),
     .RDdata_i(MUXMemtoReg_o),
     .RegWrite_i(MEMWB_WB_o[2]),
+    
     .RSdata_o(RSdata_o),
     .RTdata_o(RTdata_o)
 );
@@ -192,7 +194,7 @@ Adder Branch_Adder(
     .src2_i(IFID_PC_o),
     .sum_o(PC_Add_Immediate)
 );
-wire [5-1:0] IDEXE_Rd;
+
 IDEXE_register IDtoEXE(
     .clk_i(clk_i),
     .rst_i(rst_i),
@@ -205,8 +207,6 @@ IDEXE_register IDtoEXE(
     .immgen_i(Imm_Gen_o),
     .alu_ctrl_instr({IFID_Instr_o[30], IFID_Instr_o[14:12]}),
     .WBreg_i(IFID_Instr_o[11:7]), // rd
-    .Rs1_i(IFID_Instr_o[19:15]), // rs1
-    .Rs2_i(IFID_Instr_o[24:20]), // rs2
     .pc_add4_i(IFID_PC_Add4_o), // for jal to store PC+4 to Rd
 
     .instr_o(IDEXE_Instr_o),
@@ -215,11 +215,9 @@ IDEXE_register IDtoEXE(
     .Exe_o(IDEXE_Exe_o),
     .data1_o(IDEXE_RSdata_o),
     .data2_o(IDEXE_RTdata_o),
-    .immgen_o(IDEXE_ImmGen_o),//
-    .alu_ctrl_input(IDEXE_Instr_30_14_12_o),//
-    .WBreg_o(IDEXE_Rd),
-    .Rs1_o(IDEXE_Rs1_o),
-    .Rs2_o(IDEXE_Rs2_o),
+    .immgen_o(IDEXE_ImmGen_o),
+    .alu_ctrl_input(IDEXE_Instr_30_14_12_o),
+    .WBreg_o(IDEXE_Instr_11_7_o), // rd
     .pc_add4_o(IDEXE_PC_add4_o)
 );
 
@@ -259,10 +257,9 @@ MUX_3to1 MUX_ALU_src2(
     .select_i(ForwardB),
     .data_o(ALUSrc2_o)
 );
-assign ALUOp = IDEXE_Exe_o[2:1];
 ALU_Ctrl ALU_Ctrl(
-    .instr(IDEXE_Instr_30_14_12_o),
-    .ALUOp(ALUOp),
+    .instr(IDEXE_Instr_30_14_12_o), // I30 + func3
+    .ALUOp(IDEXE_Exe_o[2:1]), // ALUOp
     .ALU_Ctrl_o(ALU_Ctrl_o)
 );
 
@@ -278,16 +275,17 @@ alu alu(
 EXEMEM_register EXEtoMEM(
     .clk_i(clk_i),
     .rst_i(rst_i),
-    // .instr_i(),
+
+    .instr_i(IDEXE_Instr_o),
     .WB_i(IDEXE_WB_o),
     .Mem_i(IDEXE_Mem_o),
     .zero_i(Zero),
     .alu_ans_i(ALUResult),
     .rtdata_i(ALUSrc2_o),
-    .WBreg_i(IDEXE_Rd),
+    .WBreg_i(IDEXE_Instr_11_7_o),
     .pc_add4_i(IDEXE_PC_add4_o),
 
-    // .instr_o(EXEMEM_Instr_o),
+    .instr_o(EXEMEM_Instr_o),
     .WB_o(EXEMEM_WB_o),
     .Mem_o(EXEMEM_Mem_o),
     .zero_o(EXEMEM_Zero_o),
@@ -303,8 +301,8 @@ Data_Memory Data_Memory(
     .clk_i(clk_i),
     .addr_i(EXEMEM_ALUresult_o),
     .data_i(EXEMEM_RTdata_o),
-    .MemRead_i(EXEMEM_Mem_o[4]),
-    .MemWrite_i(EXEMEM_Mem_o[3]),
+    .MemRead_i(EXEMEM_Mem_o[1]),
+    .MemWrite_i(EXEMEM_Mem_o[0]), // it's only 2 bits
 
     .data_o(EXEMEM_DM_o)
 );
@@ -312,6 +310,7 @@ Data_Memory Data_Memory(
 MEMWB_register MEMtoWB(
     .clk_i(clk_i),
     .rst_i(rst_i),
+    
     .WB_i(EXEMEM_WB_o),
     .DM_i(EXEMEM_DM_o),
     .alu_ans_i(EXEMEM_ALUResult_o),
