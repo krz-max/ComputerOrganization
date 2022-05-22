@@ -13,7 +13,7 @@ module ForwardingUnit (
 always @* begin
     if(EXEMEM_RegWrite==1'b1 && IDEXE_RS1 == EXEMEM_RD && EXEMEM_RD != 0)begin
         ForwardA = 2'b10;
-    end else if(MEMWB_RegWrite==1'b1 && IDEXE_RS1 == MEMWB_RD) begin
+    end else if(MEMWB_RegWrite==1'b1 && IDEXE_RS1 == MEMWB_RD && MEMWB_RD != 0) begin
         ForwardA = 2'b01;
     end else begin 
         ForwardA = 2'b00;
@@ -21,7 +21,7 @@ always @* begin
     
     if(EXEMEM_RegWrite==1'b1 && IDEXE_RS2 == EXEMEM_RD && EXEMEM_RD != 0)begin
         ForwardB =  2'b10;
-    end else if(MEMWB_RegWrite==1'b1 && IDEXE_RS2 == MEMWB_RD) begin
+    end else if(MEMWB_RegWrite==1'b1 && IDEXE_RS2 == MEMWB_RD && MEMWB_RD != 0) begin
         ForwardB = 2'b01;
     end else  begin
         ForwardB = 2'b00;
