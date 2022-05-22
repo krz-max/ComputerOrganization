@@ -281,7 +281,7 @@ EXEMEM_register EXEtoMEM(
     .Mem_i(IDEXE_Mem_o),
     .zero_i(Zero),
     .alu_ans_i(ALUResult),
-    .rtdata_i(ALUSrc2_o),
+    .rtdata_i(IDEXE_RTdata_o),
     .WBreg_i(IDEXE_Instr_11_7_o),
     .pc_add4_i(IDEXE_PC_add4_o),
 
