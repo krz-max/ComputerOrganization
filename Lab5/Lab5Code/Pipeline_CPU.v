@@ -335,9 +335,6 @@ MUX_3to1 MUX_MemtoReg(
 
 endmodule
 
-//keep going
-//hello try try see
-
 //所以lab5還有哪裡要修
 //我想想
 // git add .
