@@ -191,7 +191,7 @@ Shift_Left_1 SL1(
     .data_o(SL1_o)
 );
 Adder Branch_Adder(
-    .src1_i(SL1_o),
+    .src1_i(Imm_Gen_o),
     .src2_i(IFID_PC_o),
     .sum_o(PC_Add_Immediate)
 );
