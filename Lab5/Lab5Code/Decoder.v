@@ -3,7 +3,7 @@ module Decoder(
     input [32-1:0]  instr_i,
     output reg         RegWrite,
     output reg         Branch,
-    output reg         Jump
+    output reg         Jump,
     output reg         WriteBack1,
     output reg         WriteBack0,
     output reg         MemRead,

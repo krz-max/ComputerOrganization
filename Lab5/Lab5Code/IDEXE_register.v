@@ -21,7 +21,7 @@ module IDEXE_register (
     output reg [31:0] data2_o,
     output reg [31:0] immgen_o,
     output reg [3:0] alu_ctrl_input,
-    output reg [4:0] WBreg_o
+    output reg [4:0] WBreg_o,
     output reg [31:0] pc_add4_o
 );
 /* Write your code HERE */
