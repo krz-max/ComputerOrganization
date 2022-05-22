@@ -9,7 +9,7 @@ module Decoder(
     output reg         MemRead,
     output reg         MemWrite,
     // output reg         ALUSrcA,
-    output reg         ALUSrcB,
+    output reg         ALUSrc,
     output reg [2-1:0] ALUOp
     // output reg         MemtoReg(merged into WriteBack)
 );
@@ -32,7 +32,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 1'bx;
-            ALUSrcB = 0;
+            ALUSrc = 0;
             ALUOp = 2'b10;
 		end
         7'b0010011: begin //addi
@@ -44,7 +44,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 1'bx;
-            ALUSrcB = 1;
+            ALUSrc = 1;
             ALUOp = 2'b00;
         end
 		7'b0000011: begin //Load
@@ -56,7 +56,7 @@ always @(*) begin
             MemRead = 1;
             MemWrite = 0;
             // ALUSrcA = 1'bx;
-            ALUSrcB = 1;
+            ALUSrc = 1;
             ALUOp = 2'b00;
 		end
 		7'b0100011: begin //Store
@@ -68,7 +68,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 1;
             // ALUSrcA = 1'bx;
-            ALUSrcB = 1;
+            ALUSrc = 1;
             ALUOp = 2'b00;
 		end
 		7'b1100011: begin //Branch
@@ -80,7 +80,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 0;
-            ALUSrcB = 0;
+            ALUSrc = 0;
             ALUOp = 2'b01;
 		end
         7'b1101111: begin //jal
@@ -92,7 +92,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 0;
-            ALUSrcB = 1'bx;
+            ALUSrc = 1'bx;
             ALUOp = 2'bxx;
         end
         7'b1100111: begin //jalr
@@ -104,7 +104,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 1;
-            ALUSrcB = 1'bx;
+            ALUSrc = 1'bx;
             ALUOp = 2'bxx;
         end
         default: begin
@@ -116,7 +116,7 @@ always @(*) begin
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 1'bx;
-            ALUSrcB = 1'bx;
+            ALUSrc = 1'bx;
             ALUOp = 2'bxx;
         end
 	endcase

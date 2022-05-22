@@ -98,7 +98,7 @@ Adder PC_plus_4_Adder(
     .sum_o(PC_Add4)
 );
 assign MUXPCSrc = (RSdata_o == RTdata_o) ? 1'b1 : 1'b0; // beq
-MUX_3to1 MUX_PCSrc(
+MUX_2to1 MUX_PCSrc(
     .data0_i(PC_Add4),
     .data1_i(PC_Add_Immediate),
     .select_i(MUXPCSrc),
@@ -125,13 +125,13 @@ IFID_register IFtoID(
     .flush(IFID_Flush), // branch hazard
     .IFID_write(IFID_Write), // load/use hazard
 
-    .address_i(IFID_address_i),// I don't know
+    .address_i(PC_o),// I don't know
     .instr_i(IM_Instr_o),
     .pc_add4_i(PC_Add4),
 
-    .address_o(IFID_address_o),// I don't know
+    .address_o(IFID_PC_o),// I don't know
     .instr_o(IFID_Instr_o),
-    .pc_add4_o(IFID_PC_o)
+    .pc_add4_o(IFID_PC_Add4_o)
 );
 
 // ID
@@ -148,7 +148,7 @@ Hazard_detection Hazard_detection_obj(
 
 MUX_2to1 MUX_control(
     .data0_i(0),
-    .data1_i({RegWrite, MemtoReg, MemRead, MemWrite, ALUOp, ALUSrc}),// {1, 2, 1, 1, 2, 1}
+    .data1_i({{24{1'b0}}, RegWrite, MemtoReg, MemRead, MemWrite, ALUOp, ALUSrc}),// {1, 2, 1, 1, 2, 1}
     .select_i(MUXControl),
     .data_o(MUX_control_o)
 );
@@ -165,7 +165,7 @@ Decoder Decoder(
     .MemWrite(MemWrite),
     // .ALUSrc(ID_ALUSrcA), // in Lab4, it is for branch and jump, and is used to select PCSrc.
     .ALUSrc(ALUSrc), // choose immd or rs2
-    .ALUOp(ALUOp), // 
+    .ALUOp(ALUOp) // 
 );
 
 Reg_File RF(
@@ -222,7 +222,7 @@ IDEXE_register IDtoEXE(
 );
 
 // EXE
-wire [32-1:0] EXE_ALUSrc_o
+wire [32-1:0] EXE_ALUSrc_o;
 MUX_2to1 MUX_ALUSrc(
     .data0_i(IDEXE_RTdata_o),
     .data1_i(IDEXE_ImmGen_o),
@@ -231,8 +231,8 @@ MUX_2to1 MUX_ALUSrc(
 );
 
 ForwardingUnit FWUnit(
-    .IDEXE_RS1(IDEXE_Rs1_o), // should be address
-    .IDEXE_RS2(IDEXE_Rs2_o),
+    .IDEXE_RS1(IDEXE_Instr_o[19:15]), // should be address
+    .IDEXE_RS2(IDEXE_Instr_o[24:20]),
     .EXEMEM_RD(EXEMEM_Instr_11_7_o), // rd from EXEMEM
     .MEMWB_RD(MEMWB_Instr_11_7_o),  // rd from MEMWB
     .EXEMEM_RegWrite(EXEMEM_WB_o), // {RegWrite, WB1, WB0}
@@ -296,7 +296,7 @@ EXEMEM_register EXEtoMEM(
 );
 
 // MEM
-wire [32-1:0] EXEMEM_DM_o
+wire [32-1:0] EXEMEM_DM_o;
 Data_Memory Data_Memory(
     .clk_i(clk_i),
     .addr_i(EXEMEM_ALUresult_o),
@@ -310,7 +310,7 @@ Data_Memory Data_Memory(
 MEMWB_register MEMtoWB(
     .clk_i(clk_i),
     .rst_i(rst_i),
-    
+
     .WB_i(EXEMEM_WB_o),
     .DM_i(EXEMEM_DM_o),
     .alu_ans_i(EXEMEM_ALUResult_o),
