@@ -45,7 +45,7 @@ always @(*) begin
             MemWrite = 0;
             // ALUSrcA = 1'bx;
             ALUSrc = 1;
-            ALUOp = (funct3 == 3'b010) ? 2'b10 : 2'b00; // 3'b010 is for slti, 3'b000 is for addi
+            ALUOp = (funct3 == 3'b010 || funct3 == 3'b001) ? 2'b10 : 2'b00; // 3'b010 is for slti, 3'b000 is for addi
         end
 		7'b0000011: begin //Load
             RegWrite = 1;
