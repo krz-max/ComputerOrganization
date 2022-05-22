@@ -97,7 +97,8 @@ Adder PC_plus_4_Adder(
     .src2_i(Imm_4),
     .sum_o(PC_Add4)
 );
-assign MUXPCSrc = (Branch && RSdata_o == RTdata_o) ? 1'b1 : 1'b0; // beq
+assign IFID_Flush = MUXPCSrc;
+assign MUXPCSrc = (Jump || (Branch && RSdata_o == RTdata_o) ) ? 1'b1 : 1'b0; // beq
 MUX_2to1 MUX_PCSrc(
     .data0_i(PC_Add4),
     .data1_i(PC_Add_Immediate),

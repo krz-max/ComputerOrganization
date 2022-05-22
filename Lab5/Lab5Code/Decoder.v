@@ -88,7 +88,7 @@ always @(*) begin
             Branch = 0;
             Jump = 1;
             WriteBack1 = 1;
-            WriteBack0 = 1'bx;
+            WriteBack0 = 1'b0;
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 0;
@@ -100,7 +100,7 @@ always @(*) begin
             Branch = 0;
             Jump = 1;
             WriteBack1 = 1;
-            WriteBack0 = 1'bx;
+            WriteBack0 = 1'b0;
             MemRead = 0;
             MemWrite = 0;
             // ALUSrcA = 1;
