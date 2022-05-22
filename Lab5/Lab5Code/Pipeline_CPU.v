@@ -235,8 +235,8 @@ ForwardingUnit FWUnit(
     .IDEXE_RS2(IDEXE_Instr_o[24:20]),
     .EXEMEM_RD(EXEMEM_Instr_11_7_o), // rd from EXEMEM
     .MEMWB_RD(MEMWB_Instr_11_7_o),  // rd from MEMWB
-    .EXEMEM_RegWrite(EXEMEM_WB_o), // {RegWrite, WB1, WB0}
-    .MEMWB_RegWrite(MEMWB_WB_o), // {RegWrite, WB1, WB0}
+    .EXEMEM_RegWrite(EXEMEM_WB_o[2]), // {RegWrite, WB1, WB0}
+    .MEMWB_RegWrite(MEMWB_WB_o[2]), // {RegWrite, WB1, WB0}
 
     .ForwardA(ForwardA),
     .ForwardB(ForwardB)
