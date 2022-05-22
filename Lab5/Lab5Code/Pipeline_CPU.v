@@ -253,7 +253,7 @@ MUX_3to1 MUX_ALU_src1(
 MUX_3to1 MUX_ALU_src2(
     .data0_i(EXE_ALUSrc_o), // from rs2 or immd.
     .data1_i(MUXMemtoReg_o), // from WB stage
-    .data2_i(EXEMEM_ALUresult_o), // from MEM stage
+    .data2_i(EXEMEM_ALUResult_o), // from MEM stage
     .select_i(ForwardB),
     .data_o(ALUSrc2_o)
 );
@@ -299,7 +299,7 @@ EXEMEM_register EXEtoMEM(
 wire [32-1:0] EXEMEM_DM_o;
 Data_Memory Data_Memory(
     .clk_i(clk_i),
-    .addr_i(EXEMEM_ALUresult_o),
+    .addr_i(EXEMEM_ALUResult_o),
     .data_i(EXEMEM_RTdata_o),
     .MemRead_i(EXEMEM_Mem_o[1]),
     .MemWrite_i(EXEMEM_Mem_o[0]), // it's only 2 bits
@@ -329,7 +329,7 @@ MUX_3to1 MUX_MemtoReg(
     .data0_i(MEMWB_ALUresult_o), // check lab4 datapath
     .data1_i(MEMWB_DM_o),
     .data2_i(MEMWB_PC_Add4_o),
-    .select_i(MEMWB_WB_o),
+    .select_i(MEMWB_WB_o[1:0]),
     .data_o(MUXMemtoReg_o)
 );
 

@@ -15,15 +15,15 @@ localparam [32-1:0] NOP = 32'b0000_0000_0000_0000_0000_0000_0001_0011; // addi x
 
 /* Write your code HERE */
 always @(posedge clk_i) begin
-    if(flush == 1'b1) begin // load/use stall or branch hazard flush
+    if(!rst_i || flush == 1) begin // load/use stall or branch hazard flush
         instr_o <= NOP;
-        address_o = 32'b0;
-        pc_add4_o = 32'b0; 
-    end 
-    else if(IFID_write == 1)begin
+        address_o <= 0;
+        pc_add4_o <= 0;
+    end
+    else if(IFID_write) begin
         instr_o <= instr_i;
         address_o <= address_i;
-        pc_add4_o <= pc_add4_i;
+        pc_add4_o <= pc_add4_i; 
     end
 end
 endmodule
