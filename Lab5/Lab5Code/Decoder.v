@@ -8,7 +8,7 @@ module Decoder(
     output reg         WriteBack0,
     output reg         MemRead,
     output reg         MemWrite,
-    output reg         ALUSrcA,
+    // output reg         ALUSrcA,
     output reg         ALUSrcB,
     output reg [2-1:0] ALUOp
     // output reg         MemtoReg(merged into WriteBack)
@@ -31,7 +31,7 @@ always @(*) begin
             WriteBack0 = 0;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 1'bx;
+            // ALUSrcA = 1'bx;
             ALUSrcB = 0;
             ALUOp = 2'b10;
 		end
@@ -43,7 +43,7 @@ always @(*) begin
             WriteBack0 = 0;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 1'bx;
+            // ALUSrcA = 1'bx;
             ALUSrcB = 1;
             ALUOp = 2'b00;
         end
@@ -55,7 +55,7 @@ always @(*) begin
             WriteBack0 = 1;
             MemRead = 1;
             MemWrite = 0;
-            ALUSrcA = 1'bx;
+            // ALUSrcA = 1'bx;
             ALUSrcB = 1;
             ALUOp = 2'b00;
 		end
@@ -67,7 +67,7 @@ always @(*) begin
             WriteBack0 = 1'bx;
             MemRead = 0;
             MemWrite = 1;
-            ALUSrcA = 1'bx;
+            // ALUSrcA = 1'bx;
             ALUSrcB = 1;
             ALUOp = 2'b00;
 		end
@@ -79,7 +79,7 @@ always @(*) begin
             WriteBack0 = 1'bx;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 0;
+            // ALUSrcA = 0;
             ALUSrcB = 0;
             ALUOp = 2'b01;
 		end
@@ -91,7 +91,7 @@ always @(*) begin
             WriteBack0 = 1'bx;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 0;
+            // ALUSrcA = 0;
             ALUSrcB = 1'bx;
             ALUOp = 2'bxx;
         end
@@ -103,7 +103,7 @@ always @(*) begin
             WriteBack0 = 1'bx;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 1;
+            // ALUSrcA = 1;
             ALUSrcB = 1'bx;
             ALUOp = 2'bxx;
         end
@@ -115,7 +115,7 @@ always @(*) begin
             WriteBack0 = 1'bx;
             MemRead = 0;
             MemWrite = 0;
-            ALUSrcA = 1'bx;
+            // ALUSrcA = 1'bx;
             ALUSrcB = 1'bx;
             ALUOp = 2'bxx;
         end

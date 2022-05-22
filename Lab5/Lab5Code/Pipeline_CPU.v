@@ -36,7 +36,8 @@ wire ALU_zero;
 wire Branch_zero;
 wire MUXPCSrc;
 wire [32-1:0] DM_o;//not yet
-wire MemtoReg, MemRead, MemWrite;
+wire [2-1:0] MemtoReg;
+wire MemRead, MemWrite;
 wire [2-1:0] ForwardA;
 wire [2-1:0] ForwardB;
 wire [32-1:0] PC_Add4;
@@ -152,22 +153,19 @@ MUX_2to1 MUX_control(
     .data_o(MUX_control_o)
 );
 
-wire ID_RegWrite, ID_Branch, ID_Jump;
-wire ID_WB1, ID_WB0, ID_MemRead, ID_MemWrite;
-wire ID_ALUSrcA, ID_ALUSrcB;
-wire [2-1:0] ID_ALUOp;
 Decoder Decoder(
     .instr_i(IFID_Instr_o),
-    .RegWrite(ID_RegWrite), // sent to MEM/WB
-    .Branch(ID_Branch), // determined at ID stage
-    .Jump(ID_Jump),
-    .WriteBack1(ID_WB1),
-    .WriteBack0(ID_WB0),
-    .MemRead(ID_MemRead),
-    .MemWrite(ID_MemWrite),
-    .ALUSrc(ID_ALUSrcA), // in Lab4, it is for branch and jump, and is used to select PCSrc.
-    .ALUSrc(ID_ALUSrcB), // choose immd or rs2
-    .ALUOp(ID_ALUOp), // 
+    
+    .RegWrite(RegWrite), // sent to MEM/WB
+    .Branch(Branch), // determined at ID stage
+    .Jump(Jump),
+    .WriteBack1(MemtoReg[1]),
+    .WriteBack0(MemtoReg[0]),
+    .MemRead(MemRead),
+    .MemWrite(MemWrite),
+    // .ALUSrc(ID_ALUSrcA), // in Lab4, it is for branch and jump, and is used to select PCSrc.
+    .ALUSrc(ALUSrc), // choose immd or rs2
+    .ALUOp(ALUOp), // 
 );
 
 Reg_File RF(
