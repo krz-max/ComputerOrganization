@@ -91,29 +91,24 @@ wire [32-1:0] PCSrc_o;
 
 // IF
 // branch
-MUX_2to1 MUX_PCSrc1( 
+Adder PC_plus_4_Adder(
+    .src1_i(PC_o),
+    .src2_i(Imm_4),
+    .sum_o(PC_Add4)
+);
+assign MUXPCSrc = (RSdata_o == RTdata_o) ? 1'b1 : 1'b0; // beq
+MUX_3to1 MUX_PCSrc(
     .data0_i(PC_Add4),
     .data1_i(PC_Add_Immediate),
     .select_i(MUXPCSrc),
-    .data_o(PCSrc_o)
-);
-// load/use hazard stall
-MUX_2to1 MUX_PCSrc2(
-    .data0_i(PC_o),
-    .data1_i(PCSrc_o),
-    .select_i(PC_write),
     .data_o(PC_i)
 );
 ProgramCounter PC(
     .clk_i(clk_i),
     .rst_i(rst_i),
+    .PCWrite(PC_write),
     .pc_i(PC_i),
     .pc_o(PC_o)
-);
-Adder PC_plus_4_Adder(
-    .src1_i(PC_o),
-    .src2_i(Imm_4),
-    .sum_o(PC_Add4)
 );
 Instr_Memory IM(
     .addr_i(PC_o),
@@ -122,34 +117,18 @@ Instr_Memory IM(
 // IFID_register source
 // flush : clear IF's PC
 // PC_write : hold IF's PC
-MUX_2to1 MUX_IFID_address(
-    .data0_i(IFID_address_o), // hold value
-    .data1_i(0), // update value
-    .select_i(IFID_Write),
-    .data_o(IFID_address_i) // input for IFID_register
-);
-MUX_2to1 MUX_IFID_instr(
-    .data0_i(IFID_Instr_o), // hold value
-    .data1_i(IM_Instr_o), // update value
-    .select_i(IFID_Write),
-    .data_o(IFID_Instr_i) // input for IFID_register
-);
-MUX_2to1 MUX_IFID_PC_Add4(
-    .data0_i(IFID_PC_o), // hold value
-    .data1_i(PC_Add4), // update value
-    .select_i(IFID_Write),
-    .data_o(IFID_PC_i) // input for IFID_register
-);
+// Hold value is implemented in IFID_register, so MUXs are removed
 IFID_register IFtoID(
     .clk_i(clk_i),
     .rst_i(rst_i),
     .flush(IFID_Flush), // branch hazard
+    .IFID_write(IFID_Write), // load/use hazard
 
-    .address_i(IFID_address_i),// 0
-    .instr_i(IFID_Instr_i),
-    .pc_add4_i(IFID_PC_i),
+    .address_i(IFID_address_i),// I don't know
+    .instr_i(IM_Instr_o),
+    .pc_add4_i(PC_Add4),
 
-    .address_o(IFID_address_o),//
+    .address_o(IFID_address_o),// I don't know
     .instr_o(IFID_Instr_o),
     .pc_add4_o(IFID_PC_o)
 );
@@ -158,7 +137,7 @@ IFID_register IFtoID(
 Hazard_detection Hazard_detection_obj(
     .IFID_regRs(IFID_Instr_o[19:15]), // rs1
     .IFID_regRt(IFID_Instr_o[24:20]), // rs2
-    .IDEXE_regRd(IDEXE_Rd), // rd of load
+    .IDEXE_regRd(IDEXE_Instr_11_7_o), // rd of load
     .IDEXE_memRead(IDEXE_memRead), // check if it's load instruction
 
     .PC_write(PC_write),
@@ -219,6 +198,7 @@ wire [5-1:0] IDEXE_Rd;
 IDEXE_register IDtoEXE(
     .clk_i(clk_i),
     .rst_i(rst_i),
+    .instr_i(IFID_Instr_o),
     .WB_i(MUX_control_o[7:5]),  // {RegWrite, WB1, WB0}
     .Mem_i(MUX_control_o[4:3]), // {ID_MEMRead, ID_MEMWrite}
     .Exe_i(MUX_control_o[2:0]), // {ALUOp, ALUSrcB}
@@ -229,7 +209,7 @@ IDEXE_register IDtoEXE(
     .WBreg_i(IFID_Instr_o[11:7]), // rd
     .Rs1_i(IFID_Instr_o[19:15]), // rs1
     .Rs2_i(IFID_Instr_o[24:20]), // rs2
-    .pc_add4_i(PC_Add4), // for jal to store PC+4 to Rd
+    .pc_add4_i(IFID_PC_Add4_o), // for jal to store PC+4 to Rd
 
     .instr_o(IDEXE_Instr_o),
     .WB_o(IDEXE_WB_o),
