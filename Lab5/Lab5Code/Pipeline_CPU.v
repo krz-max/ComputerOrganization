@@ -139,7 +139,7 @@ Hazard_detection Hazard_detection_obj(
     .IFID_regRs(IFID_Instr_o[19:15]), // rs1
     .IFID_regRt(IFID_Instr_o[24:20]), // rs2
     .IDEXE_regRd(IDEXE_Instr_11_7_o), // rd of load
-    .IDEXE_memRead(IDEXE_memRead), // check if it's load instruction
+    .IDEXE_memRead(IDEXE_Mem_o[1]), // check if it's load instruction
 
     .PC_write(PC_write),
     .IFID_write(IFID_Write),
@@ -174,7 +174,7 @@ Reg_File RF(
 
     .RSaddr_i(IFID_Instr_o[19:15]),
     .RTaddr_i(IFID_Instr_o[24:20]),
-    .RDaddr_i(EXEMEM_Instr_11_7_o),
+    .RDaddr_i(MEMWB_Instr_11_7_o),
     .RDdata_i(MUXMemtoReg_o),
     .RegWrite_i(MEMWB_WB_o[2]),
     

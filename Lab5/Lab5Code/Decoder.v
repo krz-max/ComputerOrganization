@@ -15,14 +15,14 @@ module Decoder(
 );
 
 //Internal Signals
-wire    [7-1:0]     opcode;
+wire    [7-1:0]     opcode = instr_i[6:0];
 wire    [3-1:0]     funct3;
 wire    [3-1:0]     Instr_field;
 wire    [9:0]       Ctrl_o;
 
 /* Write your code HERE */
 always @(*) begin
-	casez(instr_i)
+	casez(opcode)
 		7'b0110011: begin //R-type
             RegWrite = 1;
             Branch = 0;
