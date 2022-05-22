@@ -16,7 +16,7 @@ module Decoder(
 
 //Internal Signals
 wire    [7-1:0]     opcode = instr_i[6:0];
-wire    [3-1:0]     funct3;
+wire    [3-1:0]     funct3 = instr_i[14:12];
 wire    [3-1:0]     Instr_field;
 wire    [9:0]       Ctrl_o;
 
@@ -35,7 +35,7 @@ always @(*) begin
             ALUSrc = 0;
             ALUOp = 2'b10;
 		end
-        7'b0010011: begin //addi
+        7'b0010011: begin //I-type
             RegWrite = 1;
             Branch = 0;
             Jump = 0;
@@ -45,7 +45,7 @@ always @(*) begin
             MemWrite = 0;
             // ALUSrcA = 1'bx;
             ALUSrc = 1;
-            ALUOp = 2'b00;
+            ALUOp = (funct3 == 3'b010) ? 2'b10 : 2'b00; // 3'b010 is for slti, 3'b000 is for addi
         end
 		7'b0000011: begin //Load
             RegWrite = 1;
