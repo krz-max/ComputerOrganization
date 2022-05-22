@@ -1,4 +1,4 @@
-PC =        100
+PC =        132
 Data Memory =          0,          0,          0,          0,          2,          0,          0,          0
 Data Memory =          0,          0,          0,          0,          0,          0,          0,          0
 Data Memory =          0,          0,          0,          0,          0,          0,          0,          0
