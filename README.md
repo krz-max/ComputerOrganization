@@ -127,7 +127,7 @@
    - **set_associative_cache.cpp**, **set_associative_cache.h**
    - main.cpp
 3. Lab Description
-   - Direct-mapped cache 
+   - Direct-mapped cache (unit:Byte)
  	 | Cache size\Block size | 16 | 32 | 64 | 128 | 256 |
      | --------------------- |:--:|:--:|:--:|:---:|:---:|
      | 4k           		 |    |    |    |     |     |
