@@ -123,7 +123,9 @@
 1. Goal
    - Understand cache performance of differecnt cache architectures(direct-mapped and set-associative)
 2. Attached Files
-   - 
+   - **direct_mapped_cache.cpp**, **direct_mapped_cache.h**
+   - **set_associative_cache.cpp**, **set_associative_cache.h**
+   - main.cpp
 3. Lab Description
    - Direct-mapped cache 
  	 | Cache size\Block size | 16 | 32 | 64 | 128 | 256 |
