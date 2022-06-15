@@ -86,16 +86,63 @@
    - Connect all the wires in `Simple_Single_CPU.v`.
 4. Reference Link
    - Check the slide for example block diagram and other details.
----
-~~~
-/**************************** Template ******************************/
-## Labxx: 
+
+## Lab05: Pipeline CPU
 1. Goal
-   - 
+   - Understand how the pipeline CPU works.
+   - Know how to handle data hazard and load/use hazard.
+2. Attached Files
+   - **Adder.v**
+   - **alu.v**
+   - **ALU_Ctrl.v**
+   - Data_Memory.v
+   - **Decoder.v**
+   - **ForwardingUnit.v**
+   - **Hazard_detection.v**
+   - **Imm_Gen.v**
+   - Instr_Memory.v
+   - MUX_2to1.v
+   - MUX_3to1.v
+   - ProgramCounter.v
+   - Reg_File.v
+   - **Shift_Left_1.v** (unused)
+   - **Pipeline_CPU.v**
+   - **EXEMEM_register.v**
+   - **IDEXE_register.v**
+   - **IFID_register.v**
+   - **MEMWB_register.v**
+   - testbench.v
+3. Lab Description
+   - Finish all bolded files.
+   - Connect all the wires in `Pipeline_CPU.v`.
+   - Some new instructions that are not present in Lab4 should also be handled. (slli and slti)
+4. Reference Link
+   - Check the slide for example block diagram and other details.
+
+## Lab06: Cache Simulator
+1. Goal
+   - Understand cache performance of differecnt cache architectures(direct-mapped and set-associative)
 2. Attached Files
    - 
 3. Lab Description
-   - 
+   - Direct-mapped cache 
+ 	 | Cache size\Block size | 16 | 32 | 64 | 128 | 256 |
+     | --------------------- |:--:|:--:|:--:|:---:|:---:|
+     | 4k           		 |    |    |    |     |     |
+     | 16k 		             |    |    |    |     |     |
+     | 64k        		     |    |    |    |     |     |
+     | 256k  		         |    |    |    |     |     |
+   - Set-associative cache
+     - Block size 64B
+     - Least Recently Used conflict handling
+  	 
+	 | Cache size\Associativity | 1 | 2 | 4 | 8 |
+     | ------------------------ |:-:|:-:|:-:|:-:|
+     | 1k           		    |   |   |   |   |
+	 | 2k           		    |   |   |   |   |
+	 | 4k           		    |   |   |   |   |
+	 | 8k           		    |   |   |   |   |
+	 | 16k           		    |   |   |   |   |
+	 | 32k           		    |   |   |   |   |
 4. Reference Link
-   - 
-/**************************** Template ******************************/
+   - Check the slide for example block diagram and other details.
