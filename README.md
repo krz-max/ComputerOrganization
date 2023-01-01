@@ -16,7 +16,14 @@
 4. Reference Link
    - [Ripes Introduction](https://github.com/mortbopet/Ripes/wiki/)
    - [Ripes Download](https://github.com/mortbopet/Ripes/releases/tag/v.1.0.4)
-
+   - [https://web.eecs.utk.edu/~smarz1/courses/ece356/notes/assembly/](https://web.eecs.utk.edu/~smarz1/courses/ece356/notes/assembly/)
+   - [https://hackmd.io/@xl86305955/CA_LAB1_R32I_Simulator](https://hackmd.io/@xl86305955/CA_LAB1_R32I_Simulator)
+   - [https://stackoverflow.com/questions/59813759/how-to-use-an-array-in-risc-v-assembly](https://stackoverflow.com/questions/59813759/how-to-use-an-array-in-risc-v-assembly)
+   - [http://csl.snu.ac.kr/courses/4190.307/2020-1/riscv-user-isa.pdf](http://csl.snu.ac.kr/courses/4190.307/2020-1/riscv-user-isa.pdf)
+   - [https://stackoverflow.com/questions/60430331/different-ways-to-traverse-arrays-in-risc-v](https://stackoverflow.com/questions/60430331/different-ways-to-traverse-arrays-in-risc-v)
+   - [https://stackoverflow.com/questions/60087133/venus-risc-v-how-to-loop-compare-and-print](https://stackoverflow.com/questions/60087133/venus-risc-v-how-to-loop-compare-and-print)
+   - [https://hackmd.io/@xl86305955/CA_LAB1_R32I_Simulator](https://hackmd.io/@xl86305955/CA_LAB1_R32I_Simulator)
+   - [https://passlab.github.io/CSE564/notes/lecture03_ISA_Intro.pdf](https://passlab.github.io/CSE564/notes/lecture03_ISA_Intro.pdf)
 
 ## Lab02: 32-bit ALU
 1. Goal
